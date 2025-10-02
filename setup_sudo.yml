@@ -1,0 +1,14 @@
+---
+- name: 🔐 Configurar Sudo Sem Senha para Todas as VMs
+  hosts: ubuntu_servers
+  become: yes
+  
+  tasks:
+    - name: 📝 Configurar sudo sem senha
+      lineinfile:
+        path: /etc/sudoers.d/{{ ansible_user }}
+        state: present
+        line: "{{ ansible_user }} ALL=(ALL) NOPASSWD:ALL"
+        create: yes
+        mode: '0440'
+        validate: 'visudo -cf %s'

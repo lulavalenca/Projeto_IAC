@@ -1,0 +1,47 @@
+---
+- name: 🚀 Deploy Sistema de Monitoramento
+  hosts: ubuntu_servers
+  become: yes
+  vars:
+    app_directory: "/opt/service-monitor"
+  
+  tasks:
+    - name: 📁 Criar diretório da aplicação
+      file:
+        path: "{{ app_directory }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+    
+    - name: 🔧 Instalar Python3 e pip
+      apt:
+        name:
+          - python3
+          - python3-pip
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+    
+    - name: 📦 Instalar psutil via apt (oficial)
+      apt:
+        name: python3-psutil
+        state: present
+      when: ansible_os_family == "Debian"
+    
+    - name: 📄 Copiar script de monitoramento
+      copy:
+        src: monitor_service.py
+        dest: "{{ app_directory }}/monitor_service.py"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+    
+    - name: 🧪 Testar o script (modo simples)
+      command: "python3 {{ app_directory }}/monitor_service.py"
+      register: test_result
+      changed_when: false
+    
+    - name: 📊 Mostrar resultados do teste
+      debug:
+        var: test_result.stdout

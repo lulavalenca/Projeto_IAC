@@ -1,0 +1,25 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Ansible
+*.retry
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Sensitive data
+*_key
+*_key.pub
+vault.yml
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+monitor_results/*.log

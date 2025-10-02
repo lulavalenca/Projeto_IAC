@@ -1,0 +1,12 @@
+---
+- name: 🚀 Executar Monitoramento (Versão Simplificada)
+  hosts: ubuntu_servers
+  
+  tasks:
+    - name: 📊 Executar monitoramento
+      command: "python3 /opt/service-monitor/monitor_service.py"
+      register: monitor_output
+      
+    - name: ✅ Confirmar execução
+      debug:
+        msg: "🎉 Monitoramento executado com sucesso em {{ inventory_hostname }}"
